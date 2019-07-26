@@ -4,19 +4,25 @@ const path = require('path');
 const peoples = require('./api');
 
 let allPeoples = `${JSON.stringify(peoples, null, 2)}`;
-let p1 = `${JSON.stringify(peoples[0])}`;
-let p2 = `${JSON.stringify(peoples[1])}`;
-let p3 = `${JSON.stringify(peoples[2])}`;
-let p4 = `${JSON.stringify(peoples[3])}`;
-let p5 = `${JSON.stringify(peoples[4])}`;
+let p1 = JSON.stringify(peoples[0]);
+let p2 = JSON.stringify(peoples[1]);
+let p3 = JSON.stringify(peoples[2]);
+let p4 = JSON.stringify(peoples[3]);
+let p5 = JSON.stringify(peoples[4]);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 const server = http.createServer((req, res) => {
     let filePath = path.join(__dirname,req.url);
+    let filePath2 = path.join(__dirname,'peoples',req.url);
     let contentType = 'text/html';
-
-        switch (path.basename(filePath)) {
+    if (path.basename(filePath)==='peoples'){
+        res.writeHead(200, {'Content-type': contentType});
+        res.end(allPeoples);
+    } 
+    if (path.basename(filePath2,'/')) console.log('daadada') 
+    // console.log(req.url, path.basename(filePath2));
+        switch (path.basename(filePath2)) {
             case '1':
                 res.writeHead(200, {'Content-type': contentType});
                 res.end(p1);
@@ -39,7 +45,7 @@ const server = http.createServer((req, res) => {
                 break;
             default:
                 res.writeHead(200, {'Content-type': contentType});
-                res.end(allPeoples);
+                res.end("WRONG PATH!");
         }
 
     });
@@ -50,7 +56,6 @@ server.listen(PORT, () => {
     console.log('Listening 8080');
 });
 
-//
 
 // fs.appendFile('readme.log', people[0].name +''+'\n', function(error){
 //     if(error) throw error;
